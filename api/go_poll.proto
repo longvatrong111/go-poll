@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package gopoll;
+
+option go_package = "/api";
+
+// Service definition
+service PollService {
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+    rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+    rpc CreatePoll(CreatePollRequest) returns (CreatePollResponse);
+    rpc CreateQuestion(CreateQuestionRequest) returns (CreateQuestionResponse);
+    rpc SubmitPoll(SubmitPollRequest) returns (SubmitPollResponse);
+}
+
+// Message definitions for CreateAccount
+message CreateAccountRequest {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message CreateAccountResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Message definitions for CreateSession
+message CreateSessionRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message CreateSessionResponse {
+    string session_token = 1;
+    string message = 2;
+}
+
+// Message definitions for CreatePoll
+message CreatePollRequest {
+    string session_token = 1;
+    string poll_title = 2;
+    string description = 3;
+}
+
+message CreatePollResponse {
+    bool success = 1;
+    string poll_id = 2;
+    string message = 3;
+}
+
+// Message definitions for CreateQuestion
+message CreateQuestionRequest {
+    string session_token = 1;
+    string poll_id = 2;
+    string question_text = 3;
+    repeated string options = 4;
+}
+
+message CreateQuestionResponse {
+    bool success = 1;
+    string question_id = 2;
+    string message = 3;
+}
+
+// Message definitions for SubmitPoll
+message SubmitPollRequest {
+    string session_token = 1;
+    string poll_id = 2;
+    map<string, string> answers = 3; // question_id -> selected_option
+}
+
+message SubmitPollResponse {
+    bool success = 1;
+    string message = 2;
+}
